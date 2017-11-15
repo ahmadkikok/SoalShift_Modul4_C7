@@ -11,6 +11,19 @@
 
 static const char *dirpath = "/home/ahmadkikok";
 
+/*static int xmp_chmod(const char *path, mode_t mode, struct fuse_file_info *fi){
+	(void) fi;
+        int res;
+        res = chmod(path, mode);
+        if (res == -1)
+                return -errno;
+        return 0;
+
+}
+
+
+*/
+
 static int xmp_mkdir(const char *path, mode_t mode)
 {
 	int res;
