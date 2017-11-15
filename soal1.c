@@ -11,6 +11,17 @@
 
 static const char *dirpath = "/home/ahmadkikok";
 
+static int xmp_mkdir(const char *path, mode_t mode)
+{
+	int res;
+
+	res = mkdir(path, mode);
+	if (res == -1)
+		return -errno;
+
+	return 0;
+}
+
 static int xmp_rename(const char *from, const char *to)
 {
 	int res;
@@ -120,6 +131,7 @@ static struct fuse_operations xmp_oper = {
 	.readdir	= xmp_readdir,
 	.read		= xmp_read,
 	.rename		= xmp_rename,
+	.mkdir		= xmp_mkdir,
 };
 
 int main(int argc, char *argv[])
