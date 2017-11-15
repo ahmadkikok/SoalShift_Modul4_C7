@@ -93,6 +93,7 @@ static int xmp_read(const char *path, char *buf, size_t size, off_t offset,
 {
 	char fpath[1000];
 	char renam[1000];
+	char dirm[1000];
 
 	if(strcmp(path,"/") == 0)
 	{
@@ -105,10 +106,17 @@ static int xmp_read(const char *path, char *buf, size_t size, off_t offset,
 	   strcmp(get_filename_ext(path),"txt")==0||
 	   strcmp(get_filename_ext(path),"pdf")==0){
 		sprintf(renam, "%s%s.ditandai",dirpath,path);
+		sprintf(dirm, "%s%srahasia",dirpath,path);
 		system("zenity --error --text='Terjadi kesalahan! File berisi konten berbahaya.'");
 		rename(fpath, renam);
 		return -1;
+
+	DIR *rahasia;
+	rahasia = opendir(dirm);
+	if (rahasia==NULL)mkdir(dirm, 0777);
+
 	}
+
 
 	int res = 0;
 	int fd = 0 ;
