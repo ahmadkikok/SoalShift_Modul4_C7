@@ -152,6 +152,7 @@ static struct fuse_operations xmp_oper = {
 	.read		= xmp_read,
 	.rename		= xmp_rename,
 	.mkdir		= xmp_mkdir,
+//	.chmod		= xmp_chmod,
 };
 
 int main(int argc, char *argv[])
