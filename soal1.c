@@ -12,12 +12,18 @@
 static const char *dirpath = "/home/ahmadkikok";
 
 /*
-static int xmp_cp(const char *to, const char *from)
-{
-    int fd_to, fd_from;
-    char buf[4096];
-    ssize_t nread;
-    int saved_errno;
+static int xmp_cp(const char *to, const char *from){
+
+	int fd_to, fd_from;
+    	char buf[4096];
+    	ssize_t nread;
+    	int saved_errno;
+
+	if(strcmp(get_filename_ext(fd_from),"copy")==0){
+		sprintf(cp, "%s%s.copy",fd_to,fd_from);
+		system("zenity --error --text='File yang anda buka adalah file hasil salinan. File tidak bisa diubah maupun disalin kembali!'");
+		return -1;
+	}
 
     fd_from = open(from, O_RDONLY);
     if (fd_from < 0)
@@ -26,7 +32,39 @@ static int xmp_cp(const char *to, const char *from)
     fd_to = open(to, O_WRONLY | O_CREAT | O_EXCL, 0666);
     if (fd_to < 0)
         goto out_error;
+	
+    while (nread = read(fd_from, buf, sizeof buf), nread > 0)
+    {
+        char *out_ptr = buf;
+        ssize_t nwritten;
+
+        do {
+            nwritten = write(fd_to, out_ptr, nread);
+
+            if (nwritten >= 0)
+            {
+                nread -= nwritten;
+                out_ptr += nwritten;
+            }
+            else if (errno != EINTR)
+            {
+                goto out_error;
+            }
+        } while (nread > 0);
+    }
+
+    if (nread == 0)
+    {
+        if (close(fd_to) < 0)
+        {
+            fd_to = -1;
+            goto out_error;
+        }
+        close(fd_from);
+	
+        return 0;
 }
+//up reference to https://stackoverflow.com/questions/2180079/how-can-i-copy-a-file-on-unix-using-c
 
 static int xmp_chmod(const char *path, mode_t mode){
         int res;
@@ -109,7 +147,7 @@ static int xmp_readdir(const char *path, void *buf, fuse_fill_dir_t filler,
 	return 0;
 }
 
-//Refference https://stackoverflow.com/questions/5309471/getting-file-extension-in-c
+//Reference https://stackoverflow.com/questions/5309471/getting-file-extension-in-c
 const char *get_filename_ext(const char *filename) {
     const char *dot = strrchr(filename, '.');
     if(!dot || dot == filename) return "";
