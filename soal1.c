@@ -11,7 +11,24 @@
 
 static const char *dirpath = "/home/ahmadkikok";
 
-/*static int xmp_chmod(const char *path, mode_t mode){
+/*
+static int xmp_cp(const char *to, const char *from)
+{
+    int fd_to, fd_from;
+    char buf[4096];
+    ssize_t nread;
+    int saved_errno;
+
+    fd_from = open(from, O_RDONLY);
+    if (fd_from < 0)
+        return -1;
+
+    fd_to = open(to, O_WRONLY | O_CREAT | O_EXCL, 0666);
+    if (fd_to < 0)
+        goto out_error;
+}
+
+static int xmp_chmod(const char *path, mode_t mode){
         int res;
         res = chmod(path, mode);
         if (res == -1)
@@ -19,7 +36,6 @@ static const char *dirpath = "/home/ahmadkikok";
         return 0;
 
 }
-
 
 */
 
@@ -153,6 +169,7 @@ static struct fuse_operations xmp_oper = {
 	.rename		= xmp_rename,
 	.mkdir		= xmp_mkdir,
 //	.chmod		= xmp_chmod,
+//	.cp		= xmp_cp,
 };
 
 int main(int argc, char *argv[])
