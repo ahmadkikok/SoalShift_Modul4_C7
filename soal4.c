@@ -93,9 +93,9 @@ static int xmp_read(const char *path, char *buf, size_t size, off_t offset,
 	}
 	else sprintf(fpath, "%s%s",dirpath,path);
 
-	/*if(strstr(path,".copy") != NULL){
+	if(strstr(path,".copy") != NULL){
 		system("zenity --error --text='File yang anda buka adalah file hasil salinan. File tidak bisa diubah maupun disalin kembali!'");
-	}*/
+	}
 
 	first_t = fopen (fpath, "r");
 	fgets(file_f, 1000, first_t);
